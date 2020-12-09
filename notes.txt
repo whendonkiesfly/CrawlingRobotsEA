@@ -1,0 +1,1 @@
+Requires python 3.8 x64

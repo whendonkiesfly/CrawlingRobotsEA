@@ -1,0 +1,20 @@
+#VRML_SIM R2020b utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation -0.6931032800836722 0.6931032800836722 0.1980295085953349 0.75
+  position 2.4805590732641014 3.097074732348664 4.481825807580982
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 100 10
+}
+DEF THE_SUPERVISOR Robot {
+  name "TheSupervisor"
+  controller "SupervisorController"
+  supervisor TRUE
+}
