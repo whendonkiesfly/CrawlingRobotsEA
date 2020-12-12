@@ -23,11 +23,6 @@ def scale(val, in_range, out_range):
     # print(val, ret, in_range, out_range)
     return ret
 
-# def sym_scale(val, in_max, out_max):
-#     """
-#     Symmetric scale for when scales where the min is the negative of the max for both in and out.
-#     """
-#     return val / in_max * out_max
 
 
 # create the Robot instance.
@@ -47,10 +42,11 @@ def get_motor_range(m):
     r = (m.getMinPosition(), m.getMaxPosition())
     if r[0] == 0 and r[1] == 0:
         r = (-2*math.pi, 2*math.pi)###############################TODO: WHY ARE WE GETTING HERE FOR SALAMANDER LEGS? INFINITE ROTATION?
-    return r
+    adjusted_range = (scale(0.001, (0,1), r), scale(0.999, (0,1), r))
+    return adjusted_range
 
 def set_joints(motors, joint_positions):##########################################################################TODO: THIS NOW IS A FORCE CONTROLLER. CHANGE NAME AND STUFF. NEED TO MAKE THE NN ONLY RETURN BETWEEN -1 AND 1. USE THE COMMENTED OUT ACTIVATION FUNCTION.
-    assert len(motors) == len(joint_positions), f"Invalid joint count: {len(motors)} != {len(joint_positions)}"
+    assert len(motors) == len(joint_positions), f"Invalid joint count: Expected {len(motors)} but got {len(joint_positions)}."
 
     positions = [scale(pos, (0, 1), get_motor_range(motor)) for pos, motor in zip(joint_positions, motors)]
     for i in range(len(motors)):
@@ -65,16 +61,11 @@ else:
 
 
 # Main loop:
-# - perform simulation steps until Webots is stopping the controller
-counter = 0
 MOVE_PERIOD_TIME_SECS = 1
 CLOCK_VAL_AMPLITUDE = 1
 while robot.step(timestep) != -1:
-    counter += 1
 
-    # inputs = [math.sin(counter * timestep/1000 * speedup_value)*5]
-    cycle_start_time = counter * timestep/1000
-    # print("~", cycle_start_time)
+    cycle_start_time = robot.getTime()
     timer_input = ((cycle_start_time)%MOVE_PERIOD_TIME_SECS) * CLOCK_VAL_AMPLITUDE
 
     joint_inputs = [scale(motor.getTargetPosition(), get_motor_range(motor), (0, 1)) for motor in motors]

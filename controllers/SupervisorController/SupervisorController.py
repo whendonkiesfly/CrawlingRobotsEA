@@ -1,6 +1,6 @@
 """SupervisorController controller."""
 
-
+import datetime
 import json
 import os
 import random
@@ -23,17 +23,17 @@ from ennlib import EASupervisor
 
 
 
+
+
+ROBOT_CONTROLLER_NAME = "RobotDriver"
+
 # create the Robot instance.
 supervisor = Supervisor()
 
 # get the time step of the current world.
 timestep = int(supervisor.getBasicTimeStep())
 
-print("Starting supervisor")
-ROBOT_CONTROLLER_NAME = "RobotDriver"
 
-root = supervisor.getRoot()
-root_children = root.getField("children")
 
 
 #https://www.cyberbotics.com/doc/reference/supervisor#wb_supervisor_field_import_mf_node
@@ -45,8 +45,15 @@ class RobotContainer:
         self.start_rotation = start_rotation
         self.net_wrapper = net_wrapper
 
+
+
+
+
+
+
 def initialize_robots(robot_count, robot_string, robot_offset, z_offset):
     robot_containers = []
+    root_children = supervisor.getRoot().getField("children")
     for i in range(robot_count):
         def_name = f"ROBOT_{i}"
         def_str = f"DEF {def_name} {robot_string}"
@@ -98,40 +105,30 @@ def update_fitnesses(containers):
         container.net_wrapper.fitness = sum((end_coord[i] - container.start_coord[i])**2 for i in range(3))#########todo: not sure about this.
 
 
-weight_min_max = (-10, 10)
-bias_min_max = (-10, 10)
-new_generation_size = 5
-nn_input_count = 11####todo: probably calculate input and output count.
-nn_output_count = 10
-EPOCH_TIME = 5  # todo: maybe start long and then make it shorter.
-robot_offset = 1
-z_offset = 0
-robot_str = r'Salamander {controller "RobotDriver"}'
-########################TODO: MAYBE NEED TO MODIFY ROBOT STRING. MAYBE DON'T WORRY ABOUT IT.
+def count_robot_motors(robot):
+    print(type(robot))
+    print(dir(robot))
+    count = 0
+    for i in range(robot.getNumberOfDevices()):
+        device = robot.getDeviceByIndex(i)
+        if isinstance(device, controller.Motor):
+            count += 1
+    return count
 
-
-
-
-pause()
-containers = initialize_robots(new_generation_size, robot_str, robot_offset, z_offset)
-# nets = [BasicNeuralNet.random(nn_input_count, nn_output_count, weight_min_max, bias_min_max) for i in range(new_generation_size)]
-# prepare_cycle(containers, nets)
 
 
 #TODO: FIGURE OUT HOW TO INITIALIZE THE JOINT POSITIONS MAYBE.
 
-
-def fitness_function_callback(new_population):#############################################!#!#!#!#!!#!#!#!#!#!#!#!#population is nn,fitness pairs!!! need to change everything downstream from here.
+def fitness_function_callback(new_population, epoch_time):#############################################!#!#!#!#!!#!#!#!#!#!#!#!#population is nn,fitness pairs!!! need to change everything downstream from here.
+    global total_best_fitness
     prepare_cycle(containers, new_population)
     run()
 
     print("starting fitness")
-    runtime = 0
-    while runtime < EPOCH_TIME:
+    start_time = supervisor.getTime()
+    while supervisor.getTime() < (start_time + epoch_time):
         if supervisor.step(timestep) == -1:
             sys.exit()############################TODO: CLEANUP OR SOMETHING??? MAYBE RETURN A SPECIAL VALUE FOR CLEANUP.
-        runtime += timestep/1000
-        ###################todo: do we need to sleep? do anything like that?
 
     pause()
 
@@ -139,6 +136,34 @@ def fitness_function_callback(new_population):##################################
 
 
 
+if __name__ == "__main__":
 
-ea = EASupervisor(fitness_function_callback, new_generation_size, nn_input_count, nn_output_count, weight_min_max, bias_min_max, max_mutation_count=5)
-ea.run()
+
+    weight_min_max = (-2, 2)
+    bias_min_max = (-2, 2)
+    new_generation_size = 20
+    motor_count = 10
+    epoch_time = 5
+    robot_offset = 3
+    layer_count = 3
+    z_offset = 0
+    max_mutation_count = 20
+    robot_type_name = "Salamander"
+    output_path = r"c:\temp\blah.txt"
+
+
+
+
+    robot_str = r'{} {{controller "RobotDriver"}}'.format(robot_type_name)
+
+
+
+
+
+    print("Starting supervisor")
+    pause()
+    containers = initialize_robots(new_generation_size, robot_str, robot_offset, z_offset)
+    nn_output_count = motor_count
+    nn_input_count = nn_output_count + 1
+    ea = EASupervisor(fitness_function_callback, new_generation_size, nn_input_count, nn_output_count, weight_min_max, bias_min_max, layer_count=layer_count, max_mutation_count=max_mutation_count, callback_args=[epoch_time])
+    ea.run()

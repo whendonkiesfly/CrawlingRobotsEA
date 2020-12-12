@@ -94,12 +94,12 @@ class BasicNeuralNet:
         return cls(layers=layers)
 
     @classmethod
-    def random(cls, input_count, output_count, weight_min_max, bias_min_max):
+    def random(cls, input_count, output_count, weight_min_max, bias_min_max, layer_count=3):
         layers = [
-            NNLayer.random(input_count, input_count, weight_min_max, bias_min_max),
-            NNLayer.random(input_count, input_count, weight_min_max, bias_min_max),
-            NNLayer.random(input_count, output_count, weight_min_max, bias_min_max)
+            NNLayer.random(input_count, input_count, weight_min_max, bias_min_max) for _ in range(layer_count-1)
         ]
+
+        layers.append(NNLayer.random(input_count, output_count, weight_min_max, bias_min_max))
 
         return cls(layers)
 
@@ -113,7 +113,6 @@ class BasicNeuralNet:
 
 
     def process_network(self, inputs):
-        # print("inputs:", inputs)
         output = inputs
         for layer in self.layers:
             output = layer.process_layer(output)
@@ -133,27 +132,37 @@ class NetWrapper:
         self.fitness = fitness
 
 class EASupervisor:
-    def __init__(self, fitness_callback, popcount, input_count, output_count, weight_min_max, bias_min_max, max_mutation_count=5):
-        self.population = [NetWrapper(BasicNeuralNet.random(input_count, output_count, weight_min_max, bias_min_max)) for i in range(popcount)]
+    def __init__(self, fitness_callback, popcount, input_count, output_count, weight_min_max, bias_min_max, layer_count=3, max_mutation_count=5, output_path="out.csv", callback_args=None):
+        self.population = [NetWrapper(BasicNeuralNet.random(input_count, output_count, weight_min_max, bias_min_max, layer_count)) for i in range(popcount)]
         self.max_mutation_count = max_mutation_count
         self.popcount = popcount
         self.fitness_callback = fitness_callback
-        self.fitness_callback(self.population)
+        self.callback_args = callback_args if callback_args is not None else []
+        self.output_path = output_path
+
+        #Clear out the file.
+        with open(self.output_path, "w") as fout:
+            fout.write("Best Fitness, Average Fitness\n")
+        self.fitness_callback(self.population, *self.callback_args)
 
     def run_cycle(self, crossover_ratio=0.5, dominance_exp=1.0):
         #Birth new NNs
         new_babies = [NetWrapper(self.make_baby(crossover_ratio=crossover_ratio, dominance_exp=dominance_exp)) for _ in range(self.popcount)]
 
         #Run fitness functions.
-        self.fitness_callback(new_babies)
+        self.fitness_callback(new_babies, *self.callback_args)
 
         self.population.extend(new_babies)
 
         #Reduce the population size.
         self.reduce_pop()
 
-        #Print the fitness of the best value.##########TODO: DO SOME OTHER OUTPUT PROBABLY.
-        print(self.population[0].fitness, len(self.population))
+        #Output the best fitness.
+        best_fitness = self.population[0].fitness
+        average_fitness = sum(robot.fitness for robot in self.population) / len(self.population)
+        print(best_fitness, len(self.population))
+        with open(self.output_path, "a") as fout:
+            fout.write(f"{best_fitness}, {average_fitness}\n")
 
     def run(self):
         while True:
