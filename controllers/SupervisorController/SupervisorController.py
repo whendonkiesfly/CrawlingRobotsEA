@@ -1,5 +1,6 @@
 """SupervisorController controller."""
 
+import argparse
 import datetime
 import json
 import os
@@ -134,17 +135,39 @@ def fitness_function_callback(new_population, epoch_time):
 
 
 if __name__ == "__main__":
+    print("\x1b[2J")  # Clear the terminal.
+    
+    parser = argparse.ArgumentParser(description='Supervisor for evolving robot movement strategies.')
+    parser.add_argument('--minweight', default=-2, type=int, help='Minimum weight for the neural network')
+    parser.add_argument('--maxweight', default=2, type=int, help='Maximum weight for the neural network')
+    parser.add_argument('--minbias', default=-2, type=int, help='Minimum bias for the neural network')
+    parser.add_argument('--maxbias', default=2, type=int, help='Maximum bias for the neural network')
+    parser.add_argument('--layercount', default=3, type=int, help='Number of layers for the neural network')
+    parser.add_argument('--epoch', default=3, type=float, help='Epoch time in seconds for each fitness trial.')
+    parser.add_argument('--maxmutationcount', default=20, type=int, help='Defines the maximum number of mutations possible in the generation of a new neural network')
+    parser.add_argument('--outpath', default="out.csv", type=str, help='CSV output path')
 
 
-    weight_min_max = (-2, 2)
-    bias_min_max = (-2, 2)
-    # motor_count = 10
-    epoch_time = 5
-    layer_count = 3
-    max_mutation_count = 20
-    output_path = r"c:\temp\blah.txt"
+    args = parser.parse_args()
+    if args.minweight >= args.maxweight:
+        print("Error! minweight must be less than maxweight")
+        exit(1)
+
+    if args.minbias >= args.maxbias:
+        print("Error! minbias must be less than maxbias")
+        exit(1)
+
+    if args.layercount <= 0:
+        print("Error! layer count must be greater than 0.")
+        exit(1)
+
+    if args.epoch <= 0:
+        print("Error! epoch must be greater than 0.")
+        exit(1)
 
 
+    weight_min_max = (args.minweight, args.maxweight)
+    bias_min_max = (args.minbias, args.maxbias)
 
 
     print("Starting supervisor")
@@ -154,5 +177,5 @@ if __name__ == "__main__":
     new_generation_size = len(containers)
     nn_output_count = motor_count
     nn_input_count = nn_output_count + 1
-    ea = EASupervisor(fitness_function_callback, new_generation_size, nn_input_count, nn_output_count, weight_min_max, bias_min_max, layer_count=layer_count, max_mutation_count=max_mutation_count, callback_args=[epoch_time])
+    ea = EASupervisor(fitness_function_callback, new_generation_size, nn_input_count, nn_output_count, weight_min_max, bias_min_max, layer_count=args.layercount, output_path=args.outpath, max_mutation_count=args.maxmutationcount, callback_args=[args.epoch])
     ea.run()

@@ -15,7 +15,7 @@ RectangleArena {
 }
 DEF THE_SUPERVISOR Robot {
   name "TheSupervisor"
-  controller "<extern>"
+  controller "SupervisorController"
   supervisor TRUE
 }
 Salamander {
