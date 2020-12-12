@@ -43,7 +43,6 @@ class RobotContainer:
     def __init__(self, robot, start_coord, net_wrapper=None):
         self.robot = robot
         self.start_coord = start_coord
-        # self.start_rotation = start_rotation
         self.net_wrapper = net_wrapper
 
 
@@ -55,7 +54,6 @@ class RobotContainer:
 def initialize_robots():
     robot_containers = []
     root_children = supervisor.getRoot().getField("children")
-
     for i in range(root_children.getCount()):
         node = root_children.getMFNode(i)
         if node.getType() == node.ROBOT and not node.getField("supervisor").getSFBool():
@@ -68,7 +66,7 @@ def pause():
     supervisor.simulationSetMode(supervisor.SIMULATION_MODE_PAUSE)
 
 def run():
-    supervisor.simulationSetMode(supervisor.SIMULATION_MODE_RUN)####TODO: MAKE OPTION FOR FAST.
+    supervisor.simulationSetMode(supervisor.SIMULATION_MODE_RUN)
 
 
 def prepare_cycle(robot_containers, net_wrappers):
@@ -85,9 +83,7 @@ def prepare_cycle(robot_containers, net_wrappers):
         else:
             args_field.setMFString(0, nn_string)
 
-        container.robot.restartController()###todo: reset motors?
-    # supervisor.step(timestep)
-    # supervisor.simulationReset()
+        container.robot.restartController()
 
 
 def update_fitnesses(containers):
@@ -105,7 +101,6 @@ def count_robot_motors(robot):
             if child.getType() == child.HINGE_JOINT:
                 end_point = child.getField("endPoint")
                 if end_point is not None:
-                    print("found end point")
                     motor_count += _count_field_motors(end_point.getSFNode().getField("children"))
                 if child.getField("device").getCount() > 0:
                     motor_count += 1
@@ -119,10 +114,12 @@ def count_robot_motors(robot):
     return _count_field_motors(children)
 
 
-
+fitness_cycle_counter = 0
 def fitness_function_callback(new_population, epoch_time):
-
+    global fitness_cycle_counter
     prepare_cycle(containers, new_population)
+    fitness_cycle_counter += 1
+    print(f"Starting cycle {fitness_cycle_counter}.")
     run()
 
     start_time = supervisor.getTime()
@@ -136,14 +133,14 @@ def fitness_function_callback(new_population, epoch_time):
 
 if __name__ == "__main__":
     print("\x1b[2J")  # Clear the terminal.
-    
+
     parser = argparse.ArgumentParser(description='Supervisor for evolving robot movement strategies.')
     parser.add_argument('--minweight', default=-2, type=int, help='Minimum weight for the neural network')
     parser.add_argument('--maxweight', default=2, type=int, help='Maximum weight for the neural network')
     parser.add_argument('--minbias', default=-2, type=int, help='Minimum bias for the neural network')
     parser.add_argument('--maxbias', default=2, type=int, help='Maximum bias for the neural network')
     parser.add_argument('--layercount', default=3, type=int, help='Number of layers for the neural network')
-    parser.add_argument('--epoch', default=3, type=float, help='Epoch time in seconds for each fitness trial.')
+    parser.add_argument('--epoch', default=5, type=float, help='Epoch time in seconds for each fitness trial.')
     parser.add_argument('--maxmutationcount', default=20, type=int, help='Defines the maximum number of mutations possible in the generation of a new neural network')
     parser.add_argument('--outpath', default="out.csv", type=str, help='CSV output path')
 
@@ -173,6 +170,11 @@ if __name__ == "__main__":
     print("Starting supervisor")
     pause()
     containers = initialize_robots()
+
+    if len(containers) < 2:
+        print("Error! At least 2 robots must be defined!")
+        exit(1)
+
     motor_count = count_robot_motors(containers[0].robot)
     new_generation_size = len(containers)
     nn_output_count = motor_count
