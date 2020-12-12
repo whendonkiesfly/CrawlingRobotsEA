@@ -161,6 +161,7 @@ class EASupervisor:
         best_fitness = self.population[0].fitness
         average_fitness = sum(robot.fitness for robot in self.population) / len(self.population)
         print(best_fitness, len(self.population))
+
         with open(self.output_path, "a") as fout:
             fout.write(f"{best_fitness}, {average_fitness}\n")
 
@@ -174,12 +175,17 @@ class EASupervisor:
         Selects a pair to mate and returns a new NN which has had crossover and mutations applied.
         """
         a = b = None
+        counter = 0
         while a is b:
+            if counter == 10:
+                raise Exception("Failed to select two unique parents after 10 tries")
+            counter += 1
             a, b = random.choices([item.net for item in self.population],
                                 (item.fitness**dominance_exp for item in self.population), k=2)
         child = a.crossover(b, crossover_ratio)
         for _ in range(random.randrange(self.max_mutation_count)):
             child.mutate()
+
         return child
 
     def reduce_pop(self):
