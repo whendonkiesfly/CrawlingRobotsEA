@@ -14,10 +14,6 @@ from controller import Supervisor
 import controller
 
 
-###todo: seed? does this affect the other libraries?
-random.seed(4)
-
-
 sys.path.insert(0, os.path.join(os.path.split(os.path.realpath(__file__))[0], ".."))
 from ennlib import EASupervisor
 
@@ -142,6 +138,7 @@ if __name__ == "__main__":
     parser.add_argument('--layercount', default=3, type=int, help='Number of layers for the neural network')
     parser.add_argument('--epoch', default=5, type=float, help='Epoch time in seconds for each fitness trial.')
     parser.add_argument('--maxmutationcount', default=20, type=int, help='Defines the maximum number of mutations possible in the generation of a new neural network')
+    parser.add_argument('--seed', default=None, type=int, help='Defines the random seed')
     parser.add_argument('--outpath', default="out.csv", type=str, help='CSV output path')
 
 
@@ -162,6 +159,7 @@ if __name__ == "__main__":
         print("Error! epoch must be greater than 0.")
         exit(1)
 
+    random.seed(args.seed)
 
     weight_min_max = (args.minweight, args.maxweight)
     bias_min_max = (args.minbias, args.maxbias)

@@ -1,6 +1,8 @@
-import numpy as np
+import json
 import pickle
 import random
+
+import numpy as np
 
 def interpolate(val, min, max):
     return val * (max - min) + min
@@ -15,7 +17,6 @@ def nn_decode(net_str):
 
 class NNLayer:
     def __init__(self, weight_matrix, bias_vector, weight_min_max, bias_min_max):
-        ###todo: assertions for lengths!!!
         self.weight_matrix = np.array(weight_matrix)
         self.bias_vector = np.array(bias_vector)
         self.weight_min_max = np.array(weight_min_max)
@@ -68,7 +69,7 @@ class NNLayer:
             #Mutate a weight.
             self.weight_matrix[random.randrange(len(self.weight_matrix))][random.randrange(len(self.weight_matrix[0]))] = interpolate(random.random(), *self.weight_min_max)
 
-    def crossover(self, other_parent, crossover_ratio=0.1):##############################################################TODO: I'M NOT SURE A PURE CROSSOVER WILL WORK WELL. NO NEW VALUES WITH THIS. MAYBE INTERPOLATE. MAYBE MAKE UP FOR IT WITH MUTATIONS.
+    def crossover(self, other_parent, crossover_ratio=0.1):
         #Crossover biases.
         bias_vector = np.array([self.bias_vector[i] if random.random() > crossover_ratio else other_parent.bias_vector[i] \
                                                                                         for i in range(len(self.bias_vector))])
@@ -80,7 +81,7 @@ class NNLayer:
 
 
 class BasicNeuralNet:
-    def __init__(self, layers):###todo: other inputs?
+    def __init__(self, layers):
         self.layers = layers
 
     def to_dict(self):
@@ -139,10 +140,11 @@ class EASupervisor:
         self.fitness_callback = fitness_callback
         self.callback_args = callback_args if callback_args is not None else []
         self.output_path = output_path
+        self.best_fitness = -float("inf")
 
         #Clear out the file.
         with open(self.output_path, "w") as fout:
-            fout.write("Best Fitness, Average Fitness\n")
+            fout.write("Best Fitness, Average Fitness, Best Network\n")
         self.fitness_callback(self.population, *self.callback_args)
 
     def run_cycle(self, crossover_ratio=0.5, dominance_exp=1.0):
@@ -162,8 +164,14 @@ class EASupervisor:
         average_fitness = sum(robot.fitness for robot in self.population) / len(self.population)
         print(best_fitness, len(self.population))
 
+        if best_fitness > self.best_fitness:
+            self.best_fitness = best_fitness
+            new_best_network = json.dumps(self.population[0].net.to_dict())
+        else:
+            new_best_network = ""
+
         with open(self.output_path, "a") as fout:
-            fout.write(f"{best_fitness}, {average_fitness}\n")
+            fout.write(f"{best_fitness}, {average_fitness}, {new_best_network}\n")
 
     def run(self):
         while True:
@@ -193,15 +201,3 @@ class EASupervisor:
         self.population.sort(key=lambda item: item.fitness, reverse=True)
         #Delete the low fitness items.
         del self.population[self.popcount:]
-
-
-
-
-
-# if __name__ == "__main__":
-#     supervisor = EASupervisor(popcount=15, input_count=5, output_count=4, weight_min_max=(-1, 1), bias_min_max=(-10, 10), max_mutation_count=10)
-#     supervisor.run()
-
-
-
-###TODO: MAYBE WE CAN MAKE THE POPULATION DYNAMIC BY OPENING UP A SERVER AND SEEING HOW MANY PEOPLE CONNECT. ALSO INPUT AND OUTPUT COUNT CAN BE PROVIDED BY THE CLIENTS.

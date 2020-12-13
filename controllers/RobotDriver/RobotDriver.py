@@ -50,14 +50,13 @@ robot = controller.Robot()
 timestep = int(robot.getBasicTimeStep())
 
 motors = []
-# position_sensors = []##todo: maybe do this.
 for i in range(robot.getNumberOfDevices()):
     device = robot.getDeviceByIndex(i)
     if isinstance(device, controller.Motor):
         motors.append(MotorInfo(device))
 
 
-def set_joint_values(motor_infos, joint_values):##########################################################################TODO: THIS NOW IS A FORCE CONTROLLER. CHANGE NAME AND STUFF. NEED TO MAKE THE NN ONLY RETURN BETWEEN -1 AND 1. USE THE COMMENTED OUT ACTIVATION FUNCTION.
+def set_joint_values(motor_infos, joint_values):
     assert len(motor_infos) == len(joint_values), f"Invalid joint count: Expected {len(motor_infos)} but got {len(joint_values)}."
 
     for motor_info, joint_value in zip(motor_infos, joint_values):
