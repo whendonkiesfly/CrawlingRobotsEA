@@ -86,6 +86,9 @@ def prepare_cycle(robot_containers, net_wrappers):
             args_field.setMFString(0, nn_string)
 
         container.robot.restartController()
+        
+    #Restart the simulation to put everything back in the original position.
+    supervisor.simulationReset()
 
 
 def update_fitnesses(containers):
