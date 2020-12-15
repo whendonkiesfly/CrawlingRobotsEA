@@ -26,7 +26,7 @@ DEF THE_SUPERVISOR Robot {
     "--maxmutationcount=40"
     "--seed=4"
     "--outpath=spot.csv"
-    "--motor_count_override=17"
+    "--motor_count_override=16"
   ]
   supervisor TRUE
 }
