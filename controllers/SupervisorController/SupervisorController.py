@@ -273,7 +273,6 @@ if __name__ == "__main__":
     #Count the motors so we know how many inputs and outputs we need.
     if args.motor_count_override is None:
         motor_count = count_robot_motors(containers[0].robot)
-        print("MOTOR COUNT", motor_count)#######################TODO: REMOVE ME!
         if motor_count < 1:
             print("Error! No motors found on robots.")
             parser.print_help()
