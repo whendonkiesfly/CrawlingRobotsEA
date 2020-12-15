@@ -23,7 +23,7 @@ DEF THE_SUPERVISOR Robot {
     "--maxbias=2"
     "--layercount=3"
     "--epoch=15"
-    "--maxmutationcount=20"
+    "--maxmutationcount=40"
     "--seed=4"
     "--outpath=template.csv"
   ]
