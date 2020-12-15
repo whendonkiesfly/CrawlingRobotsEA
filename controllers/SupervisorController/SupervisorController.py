@@ -109,21 +109,39 @@ def prepare_cycle(robot_containers, net_wrappers):
     #Restart the simulation to put everything back in the original position.
     supervisor.simulationReset()
 
+    #Start the simulation.
+    run()
+
+    #Take a couple steps for the simulation reset to get processed and for the
+    # system clock to regain its sanity.
+    supervisor.step(timestep)
+    supervisor.step(timestep)
+
     return filepaths
 
 
 def update_fitnesses(containers):
     """
-    Calculates the fitness of each robot and updates the fitness within the container.
+    Calculates the fitness of each robot and updates the fitness within the container after pausing the simulation.
     Fitness is equal to the euclidian distance from the robot's starting point to its current position.
     containers is the list of RobotContainer objects with the networks initialized in them.
     Euclidian distance is calculated without accounting for depth to reduce the likelyhood
     of a robot falling causing them to gain an advantage.
     """
+    #Pause the simulation.
+    pause()
+
     for i, container in enumerate(containers):
         robot = container.robot
         end_coord = robot.getField("translation").getSFVec3f()
-        container.net_wrapper.fitness = sum((end_coord[i] - container.start_coord[i])**2 for i in (0, 2))
+        #Occationally the physics engine has issues and robots fall through the floor.
+        #Throw these out by giving them a bad fitness.
+        if end_coord[1] < 0:
+            #Fell through the floor.
+            container.net_wrapper.fitness = -float("inf")
+        else:
+            #Only look at indices 0 and 2. 1 is y (height) and we don't want to account for that.
+            container.net_wrapper.fitness = sum((end_coord[i] - container.start_coord[i])**2 for i in (0, 2))
 
 
 def count_robot_motors(robot):
@@ -169,21 +187,15 @@ def fitness_function_callback(new_population, epoch_time):
 
     #Assign neural networks to robots.
     tmp_files = prepare_cycle(containers, new_population)
+    fitness_cycle_counter += 1
+    print(f"Starting cycle {fitness_cycle_counter}.")
     try:
-        fitness_cycle_counter += 1
-        print(f"Starting cycle {fitness_cycle_counter}.")
-
-        #Start the simulation.
-        run()
 
         #Wait for a while to let the robots move.
         start_time = supervisor.getTime()
         while supervisor.getTime() < (start_time + epoch_time):
             if supervisor.step(timestep) == -1:
                 sys.exit()
-
-        #Pause the simulation.
-        pause()
 
         #Calculate the fitnesses.
         update_fitnesses(containers)
@@ -205,8 +217,6 @@ timestep = int(supervisor.getBasicTimeStep())
 
 
 if __name__ == "__main__":
-    print("\x1b[2J")  # Clear the terminal.
-
     parser = argparse.ArgumentParser(description='Supervisor for evolving robot movement strategies.')
     parser.add_argument('--minweight', default=-2, type=int, help='Minimum weight for the neural network')
     parser.add_argument('--maxweight', default=2, type=int, help='Maximum weight for the neural network')
@@ -216,6 +226,7 @@ if __name__ == "__main__":
     parser.add_argument('--epoch', default=5, type=float, help='Epoch time in seconds for each fitness trial.')
     parser.add_argument('--maxmutationcount', default=20, type=int, help='Defines the maximum number of mutations possible in the generation of a new neural network')
     parser.add_argument('--seed', default=None, type=int, help='Defines the random seed')
+    parser.add_argument('--motor_count_override', default=None, type=int, help='For some robots, the code is unable to count the motors. In this case, it must be explicitly specified.')
     parser.add_argument('--outpath', default="out.csv", type=str, help='CSV output path')
 
 
@@ -260,12 +271,15 @@ if __name__ == "__main__":
         exit(1)
 
     #Count the motors so we know how many inputs and outputs we need.
-    motor_count = count_robot_motors(containers[0].robot)
-    print("MOTOR COUNT", motor_count)
-    if motor_count < 1:
-        print("Error! No motors found on robots.")
-        parser.print_help()
-        exit(1)
+    if args.motor_count_override is None:
+        motor_count = count_robot_motors(containers[0].robot)
+        print("MOTOR COUNT", motor_count)#######################TODO: REMOVE ME!
+        if motor_count < 1:
+            print("Error! No motors found on robots.")
+            parser.print_help()
+            exit(1)
+    else:
+        motor_count = args.motor_count_override
 
     new_generation_size = len(containers)
     nn_output_count = motor_count

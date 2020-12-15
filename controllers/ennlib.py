@@ -72,7 +72,7 @@ class NNLayer:
         """
         Given inputs, returns the values calculated for this layer of the neural net.
         """
-        assert len(inputs) == self.input_count, f"inputs must be of length {self.input_count}"
+        assert len(inputs) == self.input_count, f"inputs must be of length {self.input_count} but got {len(inputs)}"
         raw_value = self.weight_matrix.dot(inputs) + self.bias_vector
         return self.activation_func(raw_value)
 
@@ -253,7 +253,7 @@ class EASupervisor:
         #Output the best fitness.
         best_fitness = self.population[0].fitness
         average_fitness = sum(robot.fitness for robot in self.population) / len(self.population)
-        print(best_fitness, len(self.population))
+        print(f"Best: {best_fitness}    Average: {average_fitness}")
 
         #If we have a new best network, we want to output it in the CSV file.
         if best_fitness > self.best_fitness:

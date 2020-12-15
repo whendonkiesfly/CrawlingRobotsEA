@@ -98,6 +98,11 @@ else:
         with open(sys.argv[1], "r") as fin:
             nn_string = fin.read()
             net = BasicNeuralNet.from_dict(json.loads(nn_string))
+    except FileNotFoundError as e:
+        #This can happen because Webots starts all the controllers at the same
+        #time before the supervisor has a chance to make the file.
+        print("Warning: NN file not found.")
+        exit(0)
     except Exception as e:
         print("Error! Failed to read NN string.", e)
         exit(1)
