@@ -123,10 +123,10 @@ def prepare_cycle(robot_containers, net_wrappers):
 def update_fitnesses(containers):
     """
     Calculates the fitness of each robot and updates the fitness within the container after pausing the simulation.
-    Fitness is equal to the euclidian distance from the robot's starting point to its current position.
+    Fitness is a function of the euclidian distance from the robot's starting point to its current position.
     containers is the list of RobotContainer objects with the networks initialized in them.
-    Euclidian distance is calculated without accounting for depth to reduce the likelyhood
-    of a robot falling causing them to gain an advantage.
+    Euclidian distance is calculated without accounting for height (y axis). If the y axis value dropped,
+    the robot is penalized for it in order to discourage diving.
     """
     #Pause the simulation.
     pause()
@@ -141,7 +141,13 @@ def update_fitnesses(containers):
             container.net_wrapper.fitness = -float("inf")
         else:
             #Only look at indices 0 and 2. 1 is y (height) and we don't want to account for that.
-            container.net_wrapper.fitness = sum((end_coord[i] - container.start_coord[i])**2 for i in (0, 2))
+            calc_diff = lambda i: (end_coord[i] - container.start_coord[i])
+            container.net_wrapper.fitness = calc_diff(0)**2 + calc_diff(2)**2
+            #Check to see if the y value dropped.
+            y_diff = calc_diff(1)
+            if y_diff < 0:
+                #The y value dropped. Penalize it.
+                container.net_wrapper.fitness -= y_diff**2
 
 
 def count_robot_motors(robot):
