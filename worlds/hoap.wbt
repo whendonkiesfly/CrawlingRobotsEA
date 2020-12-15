@@ -1,0 +1,151 @@
+#VRML_SIM R2020b utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation -0.7746105553208081 0.6031052563298075 0.19037472881910175 0.6877945573101634
+  position 1.258408181717714 1.940272035156422 2.9978436343990706
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 100 50
+}
+DEF THE_SUPERVISOR Robot {
+  name "TheSupervisor"
+  controller "SupervisorController"
+  controllerArgs [
+    "--minweight=-2"
+    "--maxweight=2"
+    "--minbias=-2"
+    "--maxbias=2"
+    "--layercount=3"
+    "--epoch=15"
+    "--maxmutationcount=20"
+    "--seed=4"
+    "--outpath=template.csv"
+  ]
+  supervisor TRUE
+}
+
+Hoap2 {
+  translation -18 0.29 0
+  name "hoap -18m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation -16 0.29 0
+  name "hoap -16m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation -14 0.29 0
+  name "hoap -14m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation -12 0.29 0
+  name "hoap -12m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation -10 0.29 0
+  name "hoap -10m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation -8 0.29 0
+  name "hoap -8m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation -6 0.29 0
+  name "hoap -6m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation -4 0.29 0
+  name "hoap -4m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation -2 0.29 0
+  name "hoap -2m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 0 0.29 0
+  name "hoap 0m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 2 0.29 0
+  name "hoap 2m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 4 0.29 0
+  name "hoap 4m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 6 0.29 0
+  name "hoap 6m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 8 0.29 0
+  name "hoap 8m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 10 0.29 0
+  name "hoap 10m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 12 0.29 0
+  name "hoap 12m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 14 0.29 0
+  name "hoap 14m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 16 0.29 0
+  name "hoap 16m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 18 0.29 0
+  name "hoap 18m"
+  controller "RobotDriver"
+}
+
+Hoap2 {
+  translation 20 0.29 0
+  name "hoap 20m"
+  controller "RobotDriver"
+}

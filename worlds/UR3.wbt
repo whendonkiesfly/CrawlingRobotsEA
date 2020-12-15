@@ -1,0 +1,431 @@
+#VRML_SIM R2020b utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation -0.7796154379020935 0.6007651332318658 0.17686442174056835 0.6859582711434279
+  position 3.626995813585322 5.4513558461013485 8.292320808020003
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 100 50
+}
+DEF THE_SUPERVISOR Robot {
+  name "TheSupervisor"
+  controller "SupervisorController"
+  controllerArgs [
+    "--minweight=-2"
+    "--maxweight=2"
+    "--minbias=-2"
+    "--maxbias=2"
+    "--layercount=3"
+    "--epoch=10"
+    "--maxmutationcount=40"
+    "--seed=4"
+    "--outpath=ur3.csv"
+  ]
+  supervisor TRUE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -18 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 1"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_0"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -16 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 2"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_1"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -14 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 3"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_2"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -12 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 4"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_3"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -10 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 5"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_4"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -8 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 6"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_5"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -6 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 7"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_6"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -4 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 8"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_7"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation -2 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 9"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_8"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 0 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 10"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_9"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 2 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 11"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_10"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 4 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 12"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_11"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 6 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 13"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_12"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 8 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 14"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_13"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 10 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 15"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_14"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 12 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 16"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_15"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 14 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 17"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_16"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 16 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 18"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_17"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 18 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 19"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_18"
+  ]
+  staticBase FALSE
+}
+UR3e {
+  hidden position_0_0 -1.7341378548936972e-07
+  hidden rotation_1 0 0 -1 1.7377590819732256e-07
+  hidden position_1_0 7.5581569115131995e-06
+  hidden rotation_2 0 1 0 1.5708035581569115
+  hidden position_2_0 6.960081153420073e-06
+  hidden rotation_3 0 1 0 6.960102540001341e-06
+  hidden position_3_0 7.962105315834764e-06
+  hidden rotation_4 0 1 0 1.5708039621053158
+  hidden position_4_0 -1.2502915925465802e-08
+  hidden position_5_0 -1.846452151345348e-12
+  translation 20 0.2066315009492789 0
+  rotation 0.5787562391508618 0.5636808125104791 -0.5893260194930106 2.112194153969954
+  name "ur3 20"
+  controller "RobotDriver"
+  controllerArgs [
+    "C:\\Users\\controls\\AppData\\Local\\Temp\\CrawlingEA_GQNUONSUUR_61_19"
+  ]
+  staticBase FALSE
+}

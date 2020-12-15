@@ -17,15 +17,15 @@ DEF THE_SUPERVISOR Robot {
   name "TheSupervisor"
   controller "SupervisorController"
   controllerArgs [
-    "--minweight=-2"
-    "--maxweight=2"
-    "--minbias=-2"
-    "--maxbias=2"
+    "--minweight=-10"
+    "--maxweight=10"
+    "--minbias=-10"
+    "--maxbias=10"
     "--layercount=3"
     "--epoch=5"
     "--maxmutationcount=20"
     "--seed=4"
-    "--outpath=salamander.csv"
+    "--outpath=piezo_salamander.csv"
   ]
   supervisor TRUE
 }

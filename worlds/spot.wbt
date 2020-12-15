@@ -1,0 +1,131 @@
+#VRML_SIM R2020b utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation -0.7746105553208081 0.6031052563298075 0.19037472881910175 0.6877945573101634
+  position 3.285690127743978 4.9454202193092325 7.529404064471368
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 100 50
+}
+DEF THE_SUPERVISOR Robot {
+  name "TheSupervisor"
+  controller "SupervisorController"
+  controllerArgs [
+    "--minweight=-2"
+    "--maxweight=2"
+    "--minbias=-2"
+    "--maxbias=2"
+    "--layercount=3"
+    "--epoch=10"
+    "--maxmutationcount=20"
+    "--seed=4"
+    "--outpath=spot.csv"
+    "--motor_count_override=17"
+  ]
+  supervisor TRUE
+}
+Spot {
+  translation -18 0.624 0
+  name "spot -18m"
+  controller "RobotDriver"
+}
+Spot {
+  translation -16 0.624 0
+  name "spot -16m"
+  controller "RobotDriver"
+}
+Spot {
+  translation -14 0.624 0
+  name "spot -14m"
+  controller "RobotDriver"
+}
+Spot {
+  translation -12 0.624 0
+  name "spot -12m"
+  controller "RobotDriver"
+}
+Spot {
+  translation -10 0.624 0
+  name "spot -10m"
+  controller "RobotDriver"
+}
+Spot {
+  translation -8 0.624 0
+  name "spot -8m"
+  controller "RobotDriver"
+}
+Spot {
+  translation -6 0.624 0
+  name "spot -6m"
+  controller "RobotDriver"
+}
+Spot {
+  translation -4 0.624 0
+  name "spot -4m"
+  controller "RobotDriver"
+}
+Spot {
+  translation -2 0.624 0
+  name "spot -2m"
+  controller "RobotDriver"
+}
+Spot {
+  name "spot 0m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 2 0.624 0
+  name "spot 2m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 4 0.624 0
+  name "spot 4m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 6 0.624 0
+  name "spot 6m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 8 0.624 0
+  name "spot 8m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 10 0.624 0
+  name "spot 10m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 12 0.624 0
+  name "spot 12m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 14 0.624 0
+  name "spot 14m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 16 0.624 0
+  name "spot 16m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 18 0.624 0
+  name "spot 18m"
+  controller "RobotDriver"
+}
+Spot {
+  translation 20 0.624 0
+  name "spot 20m"
+  controller "RobotDriver"
+}
