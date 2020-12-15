@@ -91,10 +91,16 @@ def get_joint_values(motors):
 
 #Bring in the arguments.
 if len(sys.argv) < 2 or sys.argv[1] == "":
-    print("No network received in parameter.")
-    sys.exit(0)
+    print("No network file received in parameter.")
+    sys.exit(1)
 else:
-    net = BasicNeuralNet.from_dict(json.loads(sys.argv[1]))
+    try:
+        with open(sys.argv[1], "r") as fin:
+            nn_string = fin.read()
+            net = BasicNeuralNet.from_dict(json.loads(nn_string))
+    except Exception as e:
+        print("Error! Failed to read NN string.", e)
+        exit(1)
 
 #Create the Robot instance.
 robot = controller.Robot()

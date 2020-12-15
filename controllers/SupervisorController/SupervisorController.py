@@ -10,8 +10,10 @@ import argparse
 import json
 import os
 import random
+import string
 import sys
 import time
+import tempfile
 
 from controller import Supervisor
 import controller
@@ -20,7 +22,10 @@ import controller
 sys.path.insert(0, os.path.join(os.path.split(os.path.realpath(__file__))[0], ".."))
 from ennlib import EASupervisor
 
-
+#The neural networks are passed to the robots as a file because the command line
+#arguments can be too big otherwise. These are placed into temporary files. This
+#is used to make sure we don't have multiple temp files have name collisions.
+tmpfilename_header = "".join(random.choice(string.ascii_uppercase) for _ in range(10))
 
 class RobotContainer:
     """
@@ -64,31 +69,47 @@ def run():
     """
     supervisor.simulationSetMode(supervisor.SIMULATION_MODE_RUN)
 
-
+cycle_count = 0
 def prepare_cycle(robot_containers, net_wrappers):
     """
     Assigns neural networks to each robot.
     robot_containers must be a list of RobotContainer objects as created by initialize_robots().
     net_wrappers is the list of NetWrapper objects passed into the EA's fitness function callback.
     The number of robots and networks must be equal.
+    Returns a list of temporary file paths which should be cleaned up later.
     """
+    global tmpfilename_header
+    global cycle_count
     assert len(robot_containers) == len(net_wrappers), f"Number of robots and networks must match. {len(robot_containers)}!={len(net_wrappers)}"
+    filepaths = []
     for i, container in enumerate(robot_containers):
         container.net_wrapper = net_wrappers[i]
         args_field = container.robot.getField("controllerArgs")
+
+        #Convert the network to json for transmission.
         nn_string = json.dumps(net_wrappers[i].net.to_dict())
+
+        #Create the file that holds the NN
+        nn_file_path = os.path.join(tempfile.gettempdir(), f"CrawlingEA_{tmpfilename_header}_{cycle_count}_{i}")
+        filepaths.append(nn_file_path)
+        with open(nn_file_path, "w") as fout:
+            fout.write(nn_string)
 
         #Set the new network for the argument.
         #If it doesn't have an arguments array yet, add one. Otherwise just modify it.
         if args_field.getCount() == 0:
-            args_field.insertMFString(0, nn_string)
+            args_field.insertMFString(0, nn_file_path)
         else:
-            args_field.setMFString(0, nn_string)
+            args_field.setMFString(0, nn_file_path)
 
         container.robot.restartController()
-        
+
+    cycle_count += 1
+
     #Restart the simulation to put everything back in the original position.
     supervisor.simulationReset()
+
+    return filepaths
 
 
 def update_fitnesses(containers):
@@ -96,11 +117,13 @@ def update_fitnesses(containers):
     Calculates the fitness of each robot and updates the fitness within the container.
     Fitness is equal to the euclidian distance from the robot's starting point to its current position.
     containers is the list of RobotContainer objects with the networks initialized in them.
+    Euclidian distance is calculated without accounting for depth to reduce the likelyhood
+    of a robot falling causing them to gain an advantage.
     """
     for i, container in enumerate(containers):
         robot = container.robot
         end_coord = robot.getField("translation").getSFVec3f()
-        container.net_wrapper.fitness = sum((end_coord[i] - container.start_coord[i])**2 for i in range(3))
+        container.net_wrapper.fitness = sum((end_coord[i] - container.start_coord[i])**2 for i in (0, 2))
 
 
 def count_robot_motors(robot):
@@ -145,24 +168,30 @@ def fitness_function_callback(new_population, epoch_time):
     global fitness_cycle_counter
 
     #Assign neural networks to robots.
-    prepare_cycle(containers, new_population)
-    fitness_cycle_counter += 1
-    print(f"Starting cycle {fitness_cycle_counter}.")
+    tmp_files = prepare_cycle(containers, new_population)
+    try:
+        fitness_cycle_counter += 1
+        print(f"Starting cycle {fitness_cycle_counter}.")
 
-    #Start the simulation.
-    run()
+        #Start the simulation.
+        run()
 
-    #Wait for a while to let the robots move.
-    start_time = supervisor.getTime()
-    while supervisor.getTime() < (start_time + epoch_time):
-        if supervisor.step(timestep) == -1:
-            sys.exit()
+        #Wait for a while to let the robots move.
+        start_time = supervisor.getTime()
+        while supervisor.getTime() < (start_time + epoch_time):
+            if supervisor.step(timestep) == -1:
+                sys.exit()
 
-    #Pause the simulation.
-    pause()
+        #Pause the simulation.
+        pause()
 
-    #Calculate the fitnesses.
-    update_fitnesses(containers)
+        #Calculate the fitnesses.
+        update_fitnesses(containers)
+
+    finally:
+        #Clean up temporary files.
+        for tmp_file in tmp_files:
+            os.remove(tmp_file)
 
 
 
@@ -232,6 +261,12 @@ if __name__ == "__main__":
 
     #Count the motors so we know how many inputs and outputs we need.
     motor_count = count_robot_motors(containers[0].robot)
+    print("MOTOR COUNT", motor_count)
+    if motor_count < 1:
+        print("Error! No motors found on robots.")
+        parser.print_help()
+        exit(1)
+
     new_generation_size = len(containers)
     nn_output_count = motor_count
     nn_input_count = nn_output_count + 1
